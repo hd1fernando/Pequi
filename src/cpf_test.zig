@@ -36,3 +36,8 @@ test "cpf should be invalid  when first digit is invalid" {
     const is_valid = try cpf.is_valid("149.764.610-00");
     try expect(is_valid == false);
 }
+
+test "cpf should be invalid when second digit is invalid" {
+    const is_valid = try cpf.is_valid("30877598130");
+    try expect(is_valid == false);
+}

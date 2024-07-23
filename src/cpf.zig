@@ -15,18 +15,34 @@ pub fn is_valid(cpf: []const u8) !bool {
         return false;
     if (fist_digit_is_valid(new_cpf) == false)
         return false;
+    if (second_digit_is_valid(new_cpf) == false)
+        return false;
     return true;
+}
+
+fn second_digit_is_valid(cpf: []const u8) bool {
+    var result: i32 = 0;
+    var multiplier: i32 = 11;
+    for (cpf) |elem| {
+        result += @as(i32, elem - 48) * @as(i32, multiplier);
+        multiplier -= 1;
+        if (multiplier < 2)
+            break;
+    }
+    var mod: i32 = @rem(result * 10, 11);
+    if (mod == 10)
+        mod = 0;
+    return (cpf[10] - 48) == mod;
 }
 
 fn fist_digit_is_valid(cpf: []const u8) bool {
     var result: i32 = 0;
-    var muiltiplier: i32 = 10;
+    var multiplier: i32 = 10;
     for (cpf) |elem| {
-        result += @as(i32, elem - 48) * @as(i32, muiltiplier);
-        muiltiplier -= 1;
-        if (muiltiplier < 2) {
+        result += @as(i32, elem - 48) * @as(i32, multiplier);
+        multiplier -= 1;
+        if (multiplier < 2)
             break;
-        }
     }
     const result_times_ten: i32 = result * @as(i32, 10);
     var mod: i32 = @rem(result_times_ten, @as(i32, 11));
